@@ -15,6 +15,7 @@ namespace OS_Assignment_Part_1_Mutex {
         private static bool _loaded = false;
         private static bool _picked = false;
         private static bool _havingItem = false;
+        private static bool _rotated = false;
 
         static void Main(string[] args) {
             if (args.Length > 0)
@@ -35,11 +36,13 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 Console.WriteLine("Picker() : Waiting for rotator . . .");
                 _rotatorMutex.WaitOne();
-                if (!_picked && _havingItem) {
+                if (!_picked && _havingItem && _rotated) {
                     Console.WriteLine("Picker() : Picking item . . .");
                     _picked = true;
                     _havingItem = false;
+                    _rotated = false;
                 }
+                Thread.Sleep(1000);
                 _rotatorMutex.ReleaseMutex();
             }
         }
@@ -54,7 +57,9 @@ namespace OS_Assignment_Part_1_Mutex {
                     Console.WriteLine("Loader() : Loading item . . .");
                     _loaded = false;
                     _picked = false;
+                    _rotated = true;
                 }
+                Thread.Sleep(1000);
                 _rotatorMutex.ReleaseMutex();
             }
         }
@@ -68,6 +73,7 @@ namespace OS_Assignment_Part_1_Mutex {
                     _loaded = true;
                     _havingItem = true;
                 }
+                Thread.Sleep(1000);
                 _rotatorMutex.ReleaseMutex();
             }
 
