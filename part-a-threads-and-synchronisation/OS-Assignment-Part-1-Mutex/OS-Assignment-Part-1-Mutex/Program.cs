@@ -12,22 +12,54 @@ namespace OS_Assignment_Part_1_Mutex {
     class Example {
         // Create a new Mutex. The creating thread does not own the mutex.
         private static Mutex mut = new Mutex();
+        private static Mutex _rotatorMutex = new Mutex();
         private const int numIterations = 1;
         private const int numThreads = 3;
 
         static void Main(string[] args) {
-            Console.WriteLine(args[0]);
-
-            // Create the threads that will use the protected resource.
-            for (int i = 0 ; i < numThreads ; i++) {
-                Thread newThread = new Thread(new ThreadStart(ThreadProc));
-                newThread.Name = String.Format("Thread{0}" , i + 1);
-                newThread.Start();
-            }
-
+            if (args.Length > 0)
+                Console.WriteLine(args[0]);
+            var loaderThread = new Thread(Loader) { Name = "Loader" };
+            var rotatorThread = new Thread(Rotator) { Name = "Rotator" };
+            var pickerThread = new Thread(Picker) { Name = "Picker" };
+            loaderThread.Start();
+            Thread.Sleep(100);
+            rotatorThread.Start();
+            pickerThread.Start();
             // The main thread exits, but the application continues to
             // run until all foreground threads have exited.
             Console.Read();
+        }
+
+        private static void Picker() {
+            while (true) {
+                Console.WriteLine("Picker() : Waiting for rotator . . .");
+                _rotatorMutex.WaitOne();
+                Console.WriteLine("Picker() : Picking item . . .");
+                Thread.Sleep(500);
+                _rotatorMutex.ReleaseMutex();
+            }
+        }
+
+        private static void Rotator() {
+            while (true) {
+                Console.WriteLine("Rotator() : Waiting for loader and picker . . .");
+                _rotatorMutex.WaitOne();
+                Console.WriteLine("Rotator() : Rotating . . . ");
+                Thread.Sleep(500);
+                _rotatorMutex.ReleaseMutex();
+            }
+        }
+
+        private static void Loader() {
+            while (true) {
+                Console.WriteLine("Loader() : Waiting for rotator . . .");
+                _rotatorMutex.WaitOne();
+                Console.WriteLine("Loader() : Loading item . . .");
+                Thread.Sleep(500);
+                _rotatorMutex.ReleaseMutex();
+            }
+
         }
 
         private static void ThreadProc() {
@@ -43,7 +75,7 @@ namespace OS_Assignment_Part_1_Mutex {
             Console.WriteLine("{0} is requesting the mutex" ,
                 Thread.CurrentThread.Name);
             mut.WaitOne();
-           
+
 
             Console.WriteLine("{0} has entered the protected area" ,
                 Thread.CurrentThread.Name);
