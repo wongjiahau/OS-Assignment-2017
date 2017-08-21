@@ -11,10 +11,9 @@ namespace OS_Assignment_Part_1_Mutex {
 
     class Example {
         // Create a new Mutex. The creating thread does not own the mutex.
-        private static Mutex mut = new Mutex();
         private static Mutex _rotatorMutex = new Mutex();
-        private const int numIterations = 1;
-        private const int numThreads = 3;
+        private static bool _loaded = true;
+        private static bool _picked = false;
 
         static void Main(string[] args) {
             if (args.Length > 0)
@@ -35,8 +34,11 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 Console.WriteLine("Picker() : Waiting for rotator . . .");
                 _rotatorMutex.WaitOne();
-                Console.WriteLine("Picker() : Picking item . . .");
-                Thread.Sleep(500);
+                if (_loaded) {
+                    Console.WriteLine("Picker() : Picking item . . .");
+                    _picked = true;
+                    _loaded = false;
+                }
                 _rotatorMutex.ReleaseMutex();
             }
         }
@@ -46,7 +48,6 @@ namespace OS_Assignment_Part_1_Mutex {
                 Console.WriteLine("Rotator() : Waiting for loader and picker . . .");
                 _rotatorMutex.WaitOne();
                 Console.WriteLine("Rotator() : Rotating . . . ");
-                Thread.Sleep(500);
                 _rotatorMutex.ReleaseMutex();
             }
         }
@@ -55,43 +56,14 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 Console.WriteLine("Loader() : Waiting for rotator . . .");
                 _rotatorMutex.WaitOne();
-                Console.WriteLine("Loader() : Loading item . . .");
-                Thread.Sleep(500);
+                if (_picked) {
+                    Console.WriteLine("Loader() : Loading item . . .");
+                    _loaded = true;
+                    _picked = false;
+                }
                 _rotatorMutex.ReleaseMutex();
             }
 
-        }
-
-        private static void ThreadProc() {
-            for (int i = 0 ; i < numIterations ; i++) {
-                UseResource();
-            }
-        }
-
-        // This method represents a resource that must be synchronized
-        // so that only one thread at a time can enter.
-        private static void UseResource() {
-            // Wait until it is safe to enter.
-            Console.WriteLine("{0} is requesting the mutex" ,
-                Thread.CurrentThread.Name);
-            mut.WaitOne();
-
-
-            Console.WriteLine("{0} has entered the protected area" ,
-                Thread.CurrentThread.Name);
-
-            // Place code to access non-reentrant resources here.
-
-            // Simulate some work.
-            Thread.Sleep(500);
-
-            Console.WriteLine("{0} is leaving the protected area" ,
-                Thread.CurrentThread.Name);
-
-            // Release the Mutex.
-            mut.ReleaseMutex();
-            Console.WriteLine("{0} has released the mutex" ,
-                Thread.CurrentThread.Name);
         }
     }
 }
