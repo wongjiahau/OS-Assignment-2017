@@ -11,13 +11,26 @@ namespace OS_Assignment_Part_1_Mutex {
 
     class Example {
         // Create a new Mutex. The creating thread does not own the mutex.
-        private static Mutex _rotatorMutex = new Mutex();
+        private static readonly Mutex RotatorMutex = new Mutex();
         private static bool _loaded = false;
         private static bool _picked = true;
-
+        private static int _numberOfItemsToBeDelivered;
+        private static int _numberOfItemsLoaded;
+        private static int _numberOfItemsPicked;
         static void Main(string[] args) {
-            if (args.Length > 0)
-                Console.WriteLine(args[0]);
+            if (args.Length == 1) {
+                if (!int.TryParse(args[0] , out _numberOfItemsToBeDelivered)) {
+                    Console.WriteLine($"Error : '{args[0]}' is not an integer.");
+                    return;
+                }
+                else {
+                    Console.WriteLine("Number of items to be delivered is set to " + _numberOfItemsToBeDelivered);
+                }
+            }
+            else {
+                Console.WriteLine("Error : Please pass in an integer argument that specify the number of items to be delivered.");
+                return;
+            }
             var loaderThread = new Thread(Loader) { Name = "Loader" };
             var rotatorThread = new Thread(Rotator) { Name = "Rotator" };
             var pickerThread = new Thread(Picker) { Name = "Picker" };
@@ -27,49 +40,74 @@ namespace OS_Assignment_Part_1_Mutex {
             pickerThread.Start();
             // The main thread exits, but the application continues to
             // run until all foreground threads have exited.
-            Console.Read();
         }
 
         private static void Picker() {
             while (true) {
-                Console.WriteLine("Picker() : Waiting for rotator . . .");
-                if (!_picked)
-                {
-                    _rotatorMutex.WaitOne();
-                    Console.WriteLine("Picker() : Picking item . . .");
+                if (_numberOfItemsPicked == _numberOfItemsToBeDelivered) return;
+                Console.WriteLine("Picker():\tWaiting for rotator . . .");
+                RotatorMutex.WaitOne();
+                Console.WriteLine("Picker():\tRotator is free now.");
+                if (!_picked) {
+                    Console.WriteLine($"Picker():\tPicking item #{_numberOfItemsPicked} . . .");
                     _picked = true;
-                    _rotatorMutex.ReleaseMutex();
+                    _numberOfItemsPicked++;
                 }
-                Thread.Sleep(1000);
+                else {
+                    Console.WriteLine("Picker():\tPicked an item just now.");
+                }
+                RotatorMutex.ReleaseMutex();
+                Thread.Sleep(2000);
             }
         }
 
         private static void Rotator() {
             while (true) {
-                Console.WriteLine("Rotator() : Waiting for loader and picker . . .");
-                if(_loaded && _picked)
-                {
-                    _rotatorMutex.WaitOne();
-                    Console.WriteLine("Rotator() : Rotating . . . ");
+                if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered
+                    &&
+                    _numberOfItemsPicked == _numberOfItemsToBeDelivered) {
+                    Console.WriteLine("Task completed.");
+                    return;
+                }
+                Console.WriteLine("Rotator():\tWaiting for loader and picker . . .");
+                RotatorMutex.WaitOne();
+                if (_loaded && _picked) {
+                    Console.WriteLine("========================================");
+                    Console.WriteLine("Rotator():\tRotating . . . ");
                     _loaded = false;
                     _picked = false;
-                    _rotatorMutex.ReleaseMutex();
+                    Console.WriteLine("Rotation completed.");
+                    Console.WriteLine("========================================");
                 }
-                Thread.Sleep(1000);
+                else {
+                    if (!_loaded) {
+                        Console.WriteLine("Rotator():\tWaiting for item to be loaded . . .");
+                    }
+                    if (!_picked) {
+                        Console.WriteLine("Rotator():\tWaiting for item to be picked . . .");
+                    }
+                }
+                RotatorMutex.ReleaseMutex();
+                Thread.Sleep(2000);
             }
         }
 
         private static void Loader() {
             while (true) {
-                Console.WriteLine("Loader() : Waiting for rotator . . .");
-                if (!_loaded)
-                {
-                    _rotatorMutex.WaitOne();
-                    Console.WriteLine("Loader() : Loading item . . .");
+                if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered) return;
+                Console.WriteLine("Loader():\tWaiting for rotator . . .");
+                RotatorMutex.WaitOne();
+                Console.WriteLine("Loader():\tRotator is free now.");
+                if (!_loaded) {
+                    Console.WriteLine($"Loader():\tLoading item #{_numberOfItemsLoaded} . . .");
                     _loaded = true;
-                    _rotatorMutex.ReleaseMutex();
+                    _numberOfItemsLoaded++;
                 }
-                Thread.Sleep(1000);
+                else {
+                    Console.WriteLine("Loader():\tLoaded an item just now.");
+                }
+                Thread.Sleep(2000);
+                RotatorMutex.ReleaseMutex();
             }
 
         }
