@@ -13,8 +13,7 @@ namespace OS_Assignment_Part_1_Mutex {
         // Create a new Mutex. The creating thread does not own the mutex.
         private static Mutex _rotatorMutex = new Mutex();
         private static bool _loaded = false;
-        private static bool _picked = false;
-        private static bool _havingItem = false;
+        private static bool _picked = true;
 
         static void Main(string[] args) {
             if (args.Length > 0)
@@ -34,41 +33,43 @@ namespace OS_Assignment_Part_1_Mutex {
         private static void Picker() {
             while (true) {
                 Console.WriteLine("Picker() : Waiting for rotator . . .");
-                _rotatorMutex.WaitOne();
-                if (!_picked && _havingItem) {
+                if (!_picked)
+                {
+                    _rotatorMutex.WaitOne();
                     Console.WriteLine("Picker() : Picking item . . .");
                     _picked = true;
-                    _havingItem = false;
+                    _rotatorMutex.ReleaseMutex();
                 }
-                _rotatorMutex.ReleaseMutex();
+                Thread.Sleep(1000);
             }
         }
 
         private static void Rotator() {
             while (true) {
                 Console.WriteLine("Rotator() : Waiting for loader and picker . . .");
-                _rotatorMutex.WaitOne();
-                Console.WriteLine("Rotator() : Rotating . . . ");
                 if(_loaded && _picked)
                 {
-                    Console.WriteLine("Loader() : Loading item . . .");
+                    _rotatorMutex.WaitOne();
+                    Console.WriteLine("Rotator() : Rotating . . . ");
                     _loaded = false;
                     _picked = false;
+                    _rotatorMutex.ReleaseMutex();
                 }
-                _rotatorMutex.ReleaseMutex();
+                Thread.Sleep(1000);
             }
         }
 
         private static void Loader() {
             while (true) {
                 Console.WriteLine("Loader() : Waiting for rotator . . .");
-                _rotatorMutex.WaitOne();
-                if (!_loaded && !_havingItem) {
+                if (!_loaded)
+                {
+                    _rotatorMutex.WaitOne();
                     Console.WriteLine("Loader() : Loading item . . .");
                     _loaded = true;
-                    _havingItem = true;
+                    _rotatorMutex.ReleaseMutex();
                 }
-                _rotatorMutex.ReleaseMutex();
+                Thread.Sleep(1000);
             }
 
         }
