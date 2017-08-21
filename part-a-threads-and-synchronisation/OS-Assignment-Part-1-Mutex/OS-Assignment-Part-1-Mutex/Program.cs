@@ -17,11 +17,11 @@ namespace OS_Assignment_Part_1_Mutex {
         private static int _numberOfItemsToBeDelivered;
         private static int _numberOfItemsLoaded;
         private static int _numberOfItemsPicked;
-        static void Main(string[] args) {
+        static int Main(string[] args) {
             if (args.Length == 1) {
                 if (!int.TryParse(args[0] , out _numberOfItemsToBeDelivered)) {
                     Console.WriteLine($"Error : '{args[0]}' is not an integer.");
-                    return;
+                    return -1;
                 }
                 else {
                     Console.WriteLine("Number of items to be delivered is set to " + _numberOfItemsToBeDelivered);
@@ -29,7 +29,7 @@ namespace OS_Assignment_Part_1_Mutex {
             }
             else {
                 Console.WriteLine("Error : Please pass in an integer argument that specify the number of items to be delivered.");
-                return;
+                return -1;
             }
             var loaderThread = new Thread(Loader) { Name = "Loader" };
             var rotatorThread = new Thread(Rotator) { Name = "Rotator" };
@@ -38,8 +38,21 @@ namespace OS_Assignment_Part_1_Mutex {
             Thread.Sleep(100);
             rotatorThread.Start();
             pickerThread.Start();
-            // The main thread exits, but the application continues to
-            // run until all foreground threads have exited.
+            while (true) {
+                if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered
+                    &&
+                    _numberOfItemsPicked == _numberOfItemsToBeDelivered) {
+                    Console.WriteLine("Main():\tTask completed.");
+                    Console.WriteLine("Main():\tAborting Loader() . . .");
+                    loaderThread.Abort();
+                    Console.WriteLine("Main():\tAborting Rotator() . . .");
+                    rotatorThread.Abort();
+                    Console.WriteLine("Main():\tAborting Picker() . . .");
+                    pickerThread.Abort();
+                    Console.WriteLine("Main():\tAbortions completed.");
+                    return 0;
+                }
+            }
         }
 
         private static void Picker() {
@@ -63,12 +76,7 @@ namespace OS_Assignment_Part_1_Mutex {
 
         private static void Rotator() {
             while (true) {
-                if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered
-                    &&
-                    _numberOfItemsPicked == _numberOfItemsToBeDelivered) {
-                    Console.WriteLine("Task completed.");
-                    return;
-                }
+
                 Console.WriteLine("Rotator():\tWaiting for loader and picker . . .");
                 RotatorMutex.WaitOne();
                 if (_loaded && _picked) {
