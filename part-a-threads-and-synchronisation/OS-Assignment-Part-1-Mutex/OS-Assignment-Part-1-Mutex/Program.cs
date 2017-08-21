@@ -15,7 +15,9 @@ namespace OS_Assignment_Part_1_Mutex {
         private const int numIterations = 1;
         private const int numThreads = 3;
 
-        static void Main() {
+        static void Main(string[] args) {
+            Console.WriteLine(args[0]);
+
             // Create the threads that will use the protected resource.
             for (int i = 0 ; i < numThreads ; i++) {
                 Thread newThread = new Thread(new ThreadStart(ThreadProc));
@@ -25,6 +27,7 @@ namespace OS_Assignment_Part_1_Mutex {
 
             // The main thread exits, but the application continues to
             // run until all foreground threads have exited.
+            Console.Read();
         }
 
         private static void ThreadProc() {
@@ -40,6 +43,7 @@ namespace OS_Assignment_Part_1_Mutex {
             Console.WriteLine("{0} is requesting the mutex" ,
                 Thread.CurrentThread.Name);
             mut.WaitOne();
+           
 
             Console.WriteLine("{0} has entered the protected area" ,
                 Thread.CurrentThread.Name);

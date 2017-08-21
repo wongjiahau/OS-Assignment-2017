@@ -7,7 +7,7 @@
     <ProjectGuid>{20414E3A-798E-4B91-B224-B63218106157}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>OS_Assignment_Part_1_Mutex</RootNamespace>
-    <AssemblyName>OS-Assignment-Part-1-Mutex</AssemblyName>
+    <AssemblyName>delivery</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
