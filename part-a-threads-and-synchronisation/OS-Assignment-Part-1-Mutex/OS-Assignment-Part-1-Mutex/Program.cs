@@ -12,8 +12,9 @@ namespace OS_Assignment_Part_1_Mutex {
     class Example {
         // Create a new Mutex. The creating thread does not own the mutex.
         private static Mutex _rotatorMutex = new Mutex();
-        private static bool _loaded = true;
+        private static bool _loaded = false;
         private static bool _picked = false;
+        private static bool _havingItem = false;
 
         static void Main(string[] args) {
             if (args.Length > 0)
@@ -34,10 +35,10 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 Console.WriteLine("Picker() : Waiting for rotator . . .");
                 _rotatorMutex.WaitOne();
-                if (_loaded) {
+                if (!_picked && _havingItem) {
                     Console.WriteLine("Picker() : Picking item . . .");
                     _picked = true;
-                    _loaded = false;
+                    _havingItem = false;
                 }
                 _rotatorMutex.ReleaseMutex();
             }
@@ -48,6 +49,12 @@ namespace OS_Assignment_Part_1_Mutex {
                 Console.WriteLine("Rotator() : Waiting for loader and picker . . .");
                 _rotatorMutex.WaitOne();
                 Console.WriteLine("Rotator() : Rotating . . . ");
+                if(_loaded && _picked)
+                {
+                    Console.WriteLine("Loader() : Loading item . . .");
+                    _loaded = false;
+                    _picked = false;
+                }
                 _rotatorMutex.ReleaseMutex();
             }
         }
@@ -56,10 +63,10 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 Console.WriteLine("Loader() : Waiting for rotator . . .");
                 _rotatorMutex.WaitOne();
-                if (_picked) {
+                if (!_loaded && !_havingItem) {
                     Console.WriteLine("Loader() : Loading item . . .");
                     _loaded = true;
-                    _picked = false;
+                    _havingItem = true;
                 }
                 _rotatorMutex.ReleaseMutex();
             }
