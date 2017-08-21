@@ -85,7 +85,7 @@ namespace OS_Assignment_Part_1_Mutex {
                 if (_loaded) {
                     Console.WriteLine("Rotator():\tItem is loaded on the left.");
                 }
-                if (_picked) {
+                if (_picked && _numberOfItemsPicked > 0) {
                     Console.WriteLine("Rotator():\tItem is picked on the right.");
                 }
                 if (_loaded && _picked) {
