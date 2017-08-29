@@ -21,7 +21,7 @@
 2. Wait for RotatorMutex 
 3. Signal AllItemsDelivered event if number_of_item_picked equals number_of_item_to_be_delivered 
 4. Pick item, increment number_of_item_picked
-5. Reset LoadPlaceFull event
+5. Reset PickPlaceFull event
 6. Signal Picked event
 7. Release RotatorMutex
 
