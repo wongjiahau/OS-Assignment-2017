@@ -21,19 +21,7 @@ namespace OS_Assignment_Part_1_Mutex {
         private static int _numberOfItemsLoaded;
         private static int _numberOfItemsPicked;
         static int Main(string[] args) {
-            if (args.Length == 1) {
-                if (!int.TryParse(args[0] , out _numberOfItemsToBeDelivered)) {
-                    Console.WriteLine($"Error : '{args[0]}' is not an integer.");
-                    return -1;
-                }
-                else {
-                    Console.WriteLine("Number of items to be delivered is set to " + _numberOfItemsToBeDelivered);
-                }
-            }
-            else {
-                Console.WriteLine("Error : Please pass in an integer argument that specify the number of items to be delivered.");
-                return -1;
-            }
+            if (!ValidateUserInput(args)) return -1;
             var loaderThread = new Thread(Loader) { Name = "Loader" };
             var rotatorThread = new Thread(Rotator) { Name = "Rotator" };
             var pickerThread = new Thread(Picker) { Name = "Picker" };
@@ -58,6 +46,23 @@ namespace OS_Assignment_Part_1_Mutex {
                     return 0;
                 }
             }
+        }
+
+        private static bool ValidateUserInput(string[] args) {
+            if (args.Length == 1) {
+                if (!int.TryParse(args[0] , out _numberOfItemsToBeDelivered)) {
+                    Console.WriteLine($"Error : '{args[0]}' is not an integer.");
+                    return false;
+                }
+                if (_numberOfItemsToBeDelivered < 1) {
+                    Console.WriteLine("Argument must be more than 1.");
+                    return false;
+                }
+                Console.WriteLine("Number of items to be delivered is set to " + _numberOfItemsToBeDelivered);
+                return true;
+            }
+            Console.WriteLine( "Error : Please pass in an integer argument that specify the number of items to be delivered.");
+            return false;
         }
 
         private static void Picker() {
