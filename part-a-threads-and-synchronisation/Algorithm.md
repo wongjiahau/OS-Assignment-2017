@@ -28,9 +28,11 @@
 ## Rotator
 1. Wait until Loaded event is signaled
 2. Wait until Picked event is signaled
-3. Stop if number_of_item_picked equals number_of_item_to_be_delivered
-4. Rotate
-5. Reset Picked event
-6. Reset Loaded event
-7. Signal PickPlaceFull event
-8. Signal LoadPlaceEmpty event
+3. Wait for Rotator mutex
+4. Stop if number_of_item_picked equals number_of_item_to_be_delivered
+5. Rotate
+6. Reset Picked event
+7. Reset Loaded event
+8. Signal PickPlaceFull event
+9. Signal LoadPlaceEmpty event
+10. Release RotatorMutex
