@@ -16,7 +16,9 @@ namespace OS_Assignment_Part_1_Mutex {
         // private static bool _picked = true;
         private static ManualResetEvent _loadedEvent = new ManualResetEvent(false);
         private static ManualResetEvent _pickedEvent = new ManualResetEvent(true);
-        private static ManualResetEvent _rotatedEvent = new ManualResetEvent(true);
+        private static ManualResetEvent _loadPlaceEmpty = new ManualResetEvent(true);
+        private static ManualResetEvent _pickPlaceFull = new ManualResetEvent(false);
+        //private static ManualResetEvent _rotatedEvent = new ManualResetEvent(true);
         private static int _numberOfItemsToBeDelivered;
         private static int _numberOfItemsLoaded;
         private static int _numberOfItemsPicked;
@@ -69,18 +71,21 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 if (_numberOfItemsPicked == _numberOfItemsToBeDelivered) return;
                 Console.WriteLine("Picker():\tWaiting for rotator . . .");
-                _rotatedEvent.WaitOne();
-                RotatorMutex.WaitOne();
+                //_rotatedEvent.WaitOne();
+                _pickPlaceFull.WaitOne();
+                RotatorMutex.WaitOne();                
                 Console.WriteLine("Picker():\tRotator is free now.");
                 Console.WriteLine($"Picker():\tPicking item #{_numberOfItemsPicked} . . .");
                 //if (!_picked) {
                 //    Console.WriteLine($"Picker():\tItem #{_numberOfItemsPicked} is picked.");
                 //    _picked = true;
-                //    _numberOfItemsPicked++;
+                   _numberOfItemsPicked++;
                 //}
                 //else {
                 //    Console.WriteLine("Picker():\tNo item to be picked.");
                 //}
+                //_pickedEvent.Set();
+                _pickPlaceFull.Reset();
                 _pickedEvent.Set();
                 RotatorMutex.ReleaseMutex();
                 Thread.Sleep(1000);
@@ -90,9 +95,11 @@ namespace OS_Assignment_Part_1_Mutex {
         private static void Rotator() {
             while (true) {
                 Console.WriteLine("Rotator():\tWaiting for loader and picker . . .");
-                RotatorMutex.WaitOne();
-                _pickedEvent.WaitOne();
                 _loadedEvent.WaitOne();
+                _pickedEvent.WaitOne();
+                RotatorMutex.WaitOne();
+                //_pickedEvent.WaitOne();
+                //_loadedEvent.WaitOne();
                 //if (_loaded) {
                 //    Console.WriteLine("Rotator():\tItem is loaded on the left.");
                 //}
@@ -100,12 +107,12 @@ namespace OS_Assignment_Part_1_Mutex {
                 //    Console.WriteLine("Rotator():\tItem is picked on the right.");
                 //}
                 //if (_loaded && _picked) {
-                //    Console.WriteLine("========================================");
-                //    Console.WriteLine("Rotator():\tRotating . . . ");
+                    Console.WriteLine("========================================");
+                    Console.WriteLine("Rotator():\tRotating . . . ");
                 //    _loaded = false;
                 //    _picked = false;
-                //    Console.WriteLine("Rotation completed.");
-                //    Console.WriteLine("========================================");
+                    Console.WriteLine("Rotation completed.");
+                    Console.WriteLine("========================================");
                 //}
                 //else {
                 //    if (!_loaded) {
@@ -115,8 +122,12 @@ namespace OS_Assignment_Part_1_Mutex {
                 //        Console.WriteLine("Rotator():\tWaiting for item to be picked . . .");
                 //    }
                 //}
-                _loadedEvent.Reset();
+                //_loadedEvent.Reset();
+                //_pickedEvent.Reset();
                 _pickedEvent.Reset();
+                _loadedEvent.Reset();
+                _pickPlaceFull.Set();
+                _loadPlaceEmpty.Set();
                 RotatorMutex.ReleaseMutex();
                 Thread.Sleep(1000);
             }
@@ -126,18 +137,21 @@ namespace OS_Assignment_Part_1_Mutex {
             while (true) {
                 if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered) return;
                 Console.WriteLine("Loader():\tWaiting for rotator . . .");
+                _loadPlaceEmpty.WaitOne();
                 RotatorMutex.WaitOne();
                 Console.WriteLine("Loader():\tRotator is free now.");
                 Console.WriteLine($"Loader():\tLoading item #{_numberOfItemsLoaded} . . .");
                 //if (!_loaded) {
                 //    Console.WriteLine($"Loader():\tItem #{_numberOfItemsLoaded} is loaded.");
                 //    _loaded = true;
-                //    _numberOfItemsLoaded++;
+                 _numberOfItemsLoaded++;
                 //}
                 //else {
                 //    Console.WriteLine("Loader():\tCannot load item because rotator is loaded with an item already.");
                 //}
                 Thread.Sleep(1000);
+                //_loadedEvent.Set();
+                _loadPlaceEmpty.Reset();
                 _loadedEvent.Set();
                 RotatorMutex.ReleaseMutex();
             }
