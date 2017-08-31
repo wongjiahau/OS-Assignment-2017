@@ -15,6 +15,7 @@
 5. Reset LoadPlaceEmpty event
 6. Signal Loaded event
 7. Release RotatorMutex
+8. Repeat step 1 to 7
 
 ## Picker
 1. Wait until PickPlaceFull event is signaled
@@ -24,6 +25,7 @@
 5. Reset PickPlaceFull event
 6. Signal Picked event
 7. Release RotatorMutex
+8. Repeat step 1 to 7
 
 ## Rotator
 1. Wait until Loaded event is signaled
@@ -36,3 +38,4 @@
 8. Signal PickPlaceFull event
 9. Signal LoadPlaceEmpty event
 10. Release RotatorMutex
+11. Repeat step 1 to 10
