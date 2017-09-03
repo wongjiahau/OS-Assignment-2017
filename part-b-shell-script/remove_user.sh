@@ -1,7 +1,5 @@
 #!/bin/bash
-ROOT_UID=0
 SUCCESS=0
-E_USEREXISTS=70
 username=$1
 grep -q "$username" /etc/passwd
 if [ $? -eq $SUCCESS ] 
@@ -10,7 +8,7 @@ if [ $? -eq $SUCCESS ]
 			then
 			userdel $username
 			rm -r /home/$username
-			echo "Successfully deleted the user and the directories inside"
+			echo "Successfully deleted the $username and the directories inside"
 		else
 			echo "fail"
 		fi
