@@ -2,7 +2,9 @@
 SUCCESS=0
 E_USEREXISTS=70
 username=$1
+This is to read the parameter which is the username
 grep -q "$username" /etc/passwd  
+# This is to check whether the username is exist 
 	if [ $? -eq $SUCCESS ] 
 	then	
 	echo "User $username does already exist."
@@ -11,6 +13,7 @@ grep -q "$username" /etc/passwd
 	fi
 useradd  -d /home/"$username" -m -g users -s /bin/bash "$username"
 echo "Account $username is setup successfully."
+# sleep syntax is to make the system more real which wait for 2 second 
 sleep 2
 if [ $? -eq 0 ] 	
 then
