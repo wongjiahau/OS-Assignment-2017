@@ -12,12 +12,12 @@ grep -q "$username" /etc/passwd
 	fi
 useradd  -d /home/"$username" -m -g users -s /bin/bash "$username"
 echo "Account $username is setup successfully."
-sleep 5
+sleep 2
 if [ $? -eq 0 ] 	
 then
 echo "User had been added to system!" 		
 echo "and now creating directory for the $username" 
-sleep 3
+sleep 1
 mkdir /home/$username/guildeline
 mkdir /home/$username/backup
 cp Readme.txt /home/$username/guildeline
