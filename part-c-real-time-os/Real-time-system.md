@@ -1,7 +1,7 @@
 # Real time tasks for MRT train
 ## 1.Fire and smoke detection 
 ### Functionality
-(The automatic fire detection system will be triggered to alert the station staff and the Malaysia Civil Defence Force (MCDF) should a fire break out in the MRT train)
+(The automatic fire and smoke detection system will be triggered to alert the station staff and the Malaysia Civil Defence Force (MCDF) should a fire break out in the MRT train)
 
 If the fire and smoke is detected by the fire and smoke detector system, the following action shall be carried out.
 1. Send an emergency signal to the Fire Station and the MRT Headquarters
