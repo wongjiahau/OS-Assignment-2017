@@ -2,6 +2,7 @@
 ## 1.Fire and smoke detection 
 ### Functionality
 (The automatic fire detection system will be triggered to alert the station staff and the Malaysia Civil Defence Force (MCDF) should a fire break out in the MRT train)
+
 If the fire and smoke is detected by the fire and smoke detector system, the following action shall be carried out.
 1. Send an emergency signal to the Fire Station and the MRT Headquarters
 2. Broadcast a HALT signal to all the trains on the same lane to stop moving. 
