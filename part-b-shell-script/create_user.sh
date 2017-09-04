@@ -1,5 +1,4 @@
 #!/bin/bash
-#!OOT_UID=0
 SUCCESS=0
 E_USEREXISTS=70
 username=$1
