@@ -15,7 +15,7 @@ If the fire and smoke is detected by the fire and smoke detector system, the fol
 Hard. Because the deadline must be met, else the consequences will be severe.
 ### Consequences if fail to complete before deadline
 1. Casualty will occur. 
-2. The train coming from another MRT station travelling on the same track might ploughs into the back of the stalled train that 
+2. The train coming from another MRT station travelling on the same track might crash into the back of the stalled train that 
    has caught fire.
 3. Financial loss.
 ## 2. Control the temperature and air condition in the coaches
