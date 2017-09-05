@@ -4,9 +4,9 @@ username=$1
 grep -q "$username" /etc/passwd
 echo "Do you want to delete user $username and the directories inside the home/$username "
 echo "Press Y to continue or N to abort"
-	read input
+	read ans
 	
-if [[ $input == 'Y' || $input == 'y' ]]
+if [[ $ans == 'Y' || $ans == 'y' ]]
 	then
 	if [ $? -eq $SUCCESS ] 
 		then	  
