@@ -12,7 +12,7 @@ If the fire and smoke is detected by the fire and smoke detector system, the fol
 6. Open the all the doors which are facing the opposite track except those doors which are near the fire source. 
 7. Inform the passengers to walked out of the train to the side lane and wait for train on the opposite lane to arrive and pick them up.
 ### Type
-Hard. 
+Hard. Because the deadline must be met, else the consequences will be severe.
 ### Consequences if fail to complete before deadline
 1. Casualty will occur. 
 2. The train on the back might crash onto the train that is caught fire. 
@@ -24,7 +24,7 @@ Hard.
 3. If the temperature of the coach drops below a certain level, the temperature of the air conditioner will be increased.
 
 ### Type
-Soft.
+Soft. Because this task does not neccesarily need to meet the deadline.
 ### Consequences if fail to complete before deadline
 1. The passengers will feel uncomfortable.
 
@@ -33,7 +33,7 @@ Soft.
 1. There is a radio signal sensor the detect the range of the arrival station.
 2. The speed of the MRT train will reduce when it is approaching the arrival station.
 ### Type
-Hard.
+Hard. Because the deadline must be met, else the consequences will be severe.
 ### Consequences if fail to complete before deadline
 1. Passengers will be not be able to get out of the coaches at the designated platform.
 2. No one will be able to get into the MRT train at the designated platform.
