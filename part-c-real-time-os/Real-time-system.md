@@ -30,7 +30,7 @@ Hard. Because the deadline must be met, else the consequences will be severe.
 ### Type
 Soft. Because this task does not neccesarily need to meet the deadline.
 ### Consequences if fail to complete before deadline
-1. The passengers will feel uncomfortable.
+1. The passengers in the MRT train will feel uncomfortable.
 
 ## 3. Reduce the speed as soon as it approaches the arrival station. 
 ### Functionality
