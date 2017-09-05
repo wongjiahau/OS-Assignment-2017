@@ -31,9 +31,7 @@ Hard. Because the deadline must be met, else the consequences will be severe.
 Soft. Because this task does not neccesarily need to meet the deadline.
 ### Consequences if fail to complete before deadline
 1. The passengers in the MRT train will feel uncomfortable.
-2. Temperature regulation inside the MRT train coaches becomes not consistent. If during severe hot weather condition, most 
-   passengers will be discomfort as passengers may generate heat as they get on to the MRT train.
-
+2. Temperature regulation inside the MRT train coaches becomes not consistent. 
 ## 3. Reduce the speed as soon as it approaches the arrival station. 
 ### Functionality
 1. There is a radio signal sensor that detects the range of the arrival station.
