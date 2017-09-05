@@ -26,7 +26,6 @@ namespace OS_Assignment_Part_1_Mutex {
             var rotatorThread = new Thread(Rotator) { Name = "Rotator" };
             var pickerThread = new Thread(Picker) { Name = "Picker" };
             loaderThread.Start();
-            Thread.Sleep(100);
             rotatorThread.Start();
             pickerThread.Start();
             AllItemsDelivered.WaitOne();
@@ -75,7 +74,6 @@ namespace OS_Assignment_Part_1_Mutex {
                 PickPlaceFull.Reset();
                 PickedEvent.Set();
                 RotatorMutex.ReleaseMutex();
-                Thread.Sleep(1000);
             }
         }
 
@@ -97,7 +95,6 @@ namespace OS_Assignment_Part_1_Mutex {
                 PickPlaceFull.Set();
                 LoadPlaceEmpty.Set();
                 RotatorMutex.ReleaseMutex();
-                Thread.Sleep(1000);
             }
         }
 
@@ -110,7 +107,6 @@ namespace OS_Assignment_Part_1_Mutex {
                 Console.WriteLine("Loader():\tRotator is free now.");
                 Console.WriteLine($"Loader():\tLoading item #{_numberOfItemsLoaded} . . .");
                 _numberOfItemsLoaded++;
-                Thread.Sleep(1000);
                 LoadPlaceEmpty.Reset();
                 LoadedEvent.Set();
                 RotatorMutex.ReleaseMutex();
