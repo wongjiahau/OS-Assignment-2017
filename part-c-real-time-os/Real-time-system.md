@@ -19,7 +19,8 @@ Hard. Because the deadline must be met, else the consequences will be severe.
 1. Casualty will occur. 
 2. The train coming from another MRT station travelling on the same track might crash into the back of the stalled train that 
    has caught fire.
-3. Financial loss.
+3. Financial loss. If another MRT train ploughs into the stalled MRT train or the train has a fire break out, those affected 
+   trains would need to be replaced with new ones.
 ## 2. Control the temperature and air condition in the coaches
 ### Functionality
 1. A temperature sensor will monitor the temperature in the coaches.
