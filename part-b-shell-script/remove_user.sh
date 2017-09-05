@@ -22,6 +22,8 @@ if [[ $ans == 'Y' || $ans == 'y' ]]
 	echo "The $username does not exists"
 	fi
 else 
+echo "This program will exit"
+sleep 1
 exit 0
 fi
 
