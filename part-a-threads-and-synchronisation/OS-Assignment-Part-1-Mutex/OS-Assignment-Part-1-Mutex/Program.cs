@@ -69,8 +69,11 @@ namespace OS_Assignment_Part_1_Mutex {
                 _numberOfItemsPicked++;
                 if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered
                     &&
-                    _numberOfItemsPicked == _numberOfItemsToBeDelivered)
+                    _numberOfItemsPicked == _numberOfItemsToBeDelivered) {
                     AllItemsDelivered.Set();
+                    RotatorMutex.ReleaseMutex();
+                    return;
+                }
                 PickPlaceFull.Reset();
                 PickedEvent.Set();
                 RotatorMutex.ReleaseMutex();
@@ -83,7 +86,10 @@ namespace OS_Assignment_Part_1_Mutex {
                 LoadedEvent.WaitOne();
                 PickedEvent.WaitOne();
                 RotatorMutex.WaitOne();
-                if (_numberOfItemsPicked == _numberOfItemsToBeDelivered) return;
+                if (_numberOfItemsPicked == _numberOfItemsToBeDelivered) {
+                    RotatorMutex.ReleaseMutex();
+                    return;
+                }
                 Console.WriteLine("Rotator():\tItem is loaded on the left.");
                 if (_numberOfItemsPicked > 0) Console.WriteLine("Rotator():\tItem is picked on the right.");
                 Console.WriteLine("========================================");
@@ -103,7 +109,10 @@ namespace OS_Assignment_Part_1_Mutex {
                 Console.WriteLine("Loader():\tWaiting for rotator . . .");
                 LoadPlaceEmpty.WaitOne();
                 RotatorMutex.WaitOne();
-                if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered) return;
+                if (_numberOfItemsLoaded == _numberOfItemsToBeDelivered) {
+                    RotatorMutex.ReleaseMutex();
+                    return;
+                }
                 Console.WriteLine("Loader():\tRotator is free now.");
                 Console.WriteLine($"Loader():\tLoading item #{_numberOfItemsLoaded} . . .");
                 _numberOfItemsLoaded++;
