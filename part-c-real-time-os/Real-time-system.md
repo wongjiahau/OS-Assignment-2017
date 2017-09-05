@@ -22,6 +22,7 @@ Hard.
 1. A temperature sensor will monitor the temperature in the coaches.
 2. If the temperature of the coach rises above a certain level, the temperature of the air conditioner will be reduced.
 3. If the temperature of the coach drops below a certain level, the temperature of the air conditioner will be increased.
+
 ### Type
 Soft.
 ### Consequences if fail to complete before deadline
@@ -36,3 +37,4 @@ Hard.
 ### Consequences if fail to complete before deadline
 1. Passengers will be not be able to get out of the coaches at the designated platform.
 2. No one will be able to get into the MRT train at the designated platform.
+3. The schedule of train arrival will be disrupted.
