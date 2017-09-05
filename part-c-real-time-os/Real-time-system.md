@@ -34,7 +34,7 @@ Soft. Because this task does not neccesarily need to meet the deadline.
 
 ## 3. Reduce the speed as soon as it approaches the arrival station. 
 ### Functionality
-1. There is a radio signal sensor the detect the range of the arrival station.
+1. There is a radio signal sensor that detects the range of the arrival station.
 2. The speed of the MRT train will reduce when it is approaching the arrival station.
 ### Type
 Hard. Because the deadline must be met, else the consequences will be severe.
